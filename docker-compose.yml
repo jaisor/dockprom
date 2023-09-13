@@ -1,5 +1,7 @@
 version: '2.1'
 
+name: jollypop-observability
+
 networks:
   monitor-net:
     driver: bridge
@@ -11,7 +13,7 @@ volumes:
 services:
 
   prometheus:
-    image: prom/prometheus:v2.46.0
+    image: prom/prometheus:latest
     container_name: prometheus
     volumes:
       - ./prometheus:/etc/prometheus
@@ -21,7 +23,7 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
-      - '--storage.tsdb.retention.time=200h'
+      - '--storage.tsdb.retention.time=90d'
       - '--web.enable-lifecycle'
     restart: unless-stopped
     expose:
@@ -32,7 +34,7 @@ services:
       org.label-schema.group: "monitoring"
 
   alertmanager:
-    image: prom/alertmanager:v0.25.0
+    image: prom/alertmanager:latest
     container_name: alertmanager
     volumes:
       - ./alertmanager:/etc/alertmanager
@@ -48,7 +50,7 @@ services:
       org.label-schema.group: "monitoring"
 
   nodeexporter:
-    image: prom/node-exporter:v1.6.1
+    image: prom/node-exporter:latest
     container_name: nodeexporter
     volumes:
       - /proc:/host/proc:ro
@@ -68,7 +70,7 @@ services:
       org.label-schema.group: "monitoring"
 
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.47.1
+    image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
     privileged: true
     devices:
@@ -88,7 +90,7 @@ services:
       org.label-schema.group: "monitoring"
 
   grafana:
-    image: grafana/grafana:10.0.3
+    image: grafana/grafana:latest
     container_name: grafana
     volumes:
       - grafana_data:/var/lib/grafana
@@ -107,7 +109,7 @@ services:
       org.label-schema.group: "monitoring"
 
   pushgateway:
-    image: prom/pushgateway:v1.6.0
+    image: prom/pushgateway:latest
     container_name: pushgateway
     restart: unless-stopped
     expose:
@@ -118,7 +120,7 @@ services:
       org.label-schema.group: "monitoring"
 
   caddy:
-    image: caddy:2.6.4
+    image: caddy:latest
     container_name: caddy
     ports:
       - "3000:3000"
