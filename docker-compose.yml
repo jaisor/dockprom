@@ -79,7 +79,7 @@ services:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
       - /sys:/sys:ro
-      - /var/lib/docker:/var/lib/docker:ro
+      #- /var/lib/docker:/var/lib/docker:ro
       #- /cgroup:/cgroup:ro #doesn't work on MacOS only for Linux
     restart: unless-stopped
     expose:
@@ -139,3 +139,11 @@ services:
       - monitor-net
     labels:
       org.label-schema.group: "monitoring"
+
+  sensors-exporter:
+    image: amkay/sensor-exporter
+    container_name: sensors-exporter
+    expose:
+      - 9255
+    networks:
+      - monitor-net

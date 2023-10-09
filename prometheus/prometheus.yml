@@ -34,6 +34,10 @@ scrape_configs:
     static_configs:
       - targets: ['pushgateway:9091']
 
+  - job_name: 'sensors'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['sensors-exporter:9255']
 
 alerting:
   alertmanagers:
